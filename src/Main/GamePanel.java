@@ -1,32 +1,36 @@
 package Main;
 
 import Entity.Player;
+import Tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    //ScreenSettings
-
+    //Screen settings
     final int originalTileSize = 16; //Standard
-    final int scale = 3; //För att nya datorer är bättre och 16 bitar blir pyttelitet. Standars i retrospel x 3.
+    final int scale = 3; //För att nya datorer är bättre och 16 bitar blir pyttelitet. Standard i retrospel x 3.
 
     public final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = maxScreenCol * tileSize;
-    final int screenHeight = maxScreenRow * tileSize;
+    public int maxScreenCol = 16;
+    public int maxScreenRow = 12;
+    public int screenWidth = maxScreenCol * tileSize;
+    public int screenHeight = maxScreenRow * tileSize;
+
+    //World settings
+    public final int maxWorldCol = 65;
+    public final int maxWorldRow = 49;
+    public final int worldWidth = maxWorldCol * tileSize;
+    public final int worldHeight = maxWorldRow * tileSize;
 
     //FPS = frames per second
     final int fps = 60;
 
+    TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler();
-    Player player = new Player(this, keyHandler);
+    public Player player = new Player(this, keyHandler);
     Thread gameThread;
-
-    //Player default
-    int playerX = 100, playerY = 100, playerSpeed = 4;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -78,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; //Convert Graphics to Graphics2D
+        tileManager.draw(g2);   //Före player -- rita tile first, annars syns inte player för tile ritas på.
         player.draw(g2);
         g2.dispose(); //Dispose of graphic context = spar memory
     }

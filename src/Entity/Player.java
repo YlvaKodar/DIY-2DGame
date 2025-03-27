@@ -14,9 +14,15 @@ public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    public final int screenX, screenY;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+
+        screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize/2); //Det här behöver vi nog ändra sedan.
+        screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize/2); //Det är kameran.
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -39,8 +45,8 @@ public class Player extends Entity{
     }
 
     public void setDefaultValues() {
-       x = 100;
-       y = 100;
+       worldX = gamePanel.tileSize * 11; //Här börjar spelaren
+       worldY = gamePanel.tileSize * 4 ;
        speed = 4;
        direction = "down";
     }
@@ -50,19 +56,19 @@ public class Player extends Entity{
         if (keyHandler.down || keyHandler.up || keyHandler.left || keyHandler.right) {
             if (keyHandler.up) {
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             }
             if (keyHandler.down) {
                 direction = "down";
-                y += speed;
+                worldY += speed;
             }
             if (keyHandler.left) {
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             }
             if (keyHandler.right) {
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
 
             spriteCounter++;
@@ -107,7 +113,7 @@ public class Player extends Entity{
                 break;
         }
 
-        g2.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 
 //        g2.setColor(Color.WHITE);
 //        g2.fillRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
