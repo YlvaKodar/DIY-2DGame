@@ -23,6 +23,8 @@ public class Player extends Entity{
         screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize/2); //Det här behöver vi nog ändra sedan.
         screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize/2); //Det är kameran.
 
+        bodySolidity = new Rectangle(8, 22, 32, 24); //x och y: koordinater för startpixel av players solidity.
+
         setDefaultValues();
         getPlayerImage();
     }
@@ -56,19 +58,29 @@ public class Player extends Entity{
         if (keyHandler.down || keyHandler.up || keyHandler.left || keyHandler.right) {
             if (keyHandler.up) {
                 direction = "up";
-                worldY -= speed;
             }
             if (keyHandler.down) {
                 direction = "down";
-                worldY += speed;
             }
             if (keyHandler.left) {
                 direction = "left";
-                worldX -= speed;
             }
             if (keyHandler.right) {
                 direction = "right";
-                worldX += speed;
+            }
+
+            //CHECK TILE COLLISION ...
+            collisionOn = false;
+            gamePanel.collisionChecker.checkTile(this);
+
+            //... IF FALSE, MOVE:
+            if (!collisionOn) {
+                switch (direction) {
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed;
+                }
             }
 
             spriteCounter++;
