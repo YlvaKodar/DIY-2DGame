@@ -33,7 +33,6 @@ public class TileManager {
             tiles[2].collision = true;
             tiles[3] = new Tile();
             tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/sand.png"));
-            tiles[3].collision = true;
             tiles[4] = new Tile();
             tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/earth.png"));
             tiles[5] = new Tile();
@@ -42,6 +41,9 @@ public class TileManager {
             tiles[6] = new Tile();
             tiles[6].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/appletree.png"));
             tiles[6].collision = true;
+            tiles[7] = new Tile();
+            tiles[7].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/cactus.png"));
+            tiles[7].collision = true;
 
         }catch (Exception e) {
             System.out.println("Fel i tileManager");

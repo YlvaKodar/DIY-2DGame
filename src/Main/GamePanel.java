@@ -2,9 +2,11 @@ package Main;
 
 import Entity.Player;
 import Tile.TileManager;
+import Object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.stream.IntStream;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -31,7 +33,9 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
+    public SuperObject obj[] = new SuperObject[10];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -39,6 +43,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true); //Fönstret kan fokusera på att få keyinput
+    }
+
+    public void setUpGame(){
+        assetSetter.setObject();
+
     }
 
     @Override
@@ -83,7 +92,14 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; //Convert Graphics to Graphics2D
+
+        //TILE
         tileManager.draw(g2);   //Före player -- rita tile first, annars syns inte player för tile ritas på.
+
+        //OBJECT
+        IntStream.range(0, obj.length).filter(i -> obj[i] != null).forEach(i -> obj[i].draw(g2, this));
+
+        //PLAYER
         player.draw(g2);
         g2.dispose(); //Dispose of graphic context = spar memory
     }

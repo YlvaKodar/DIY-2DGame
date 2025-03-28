@@ -2,11 +2,11 @@ package Main;
 
 import javax.swing.*;
 
-public class Frame {
+public class Main {
 
     JFrame frame;
 
-    Frame(){
+    Main(){
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,11 +20,11 @@ public class Frame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-
+        gamePanel.setUpGame();
         gamePanel.startGameThread();
     }
 
     public static void main(String[] args) {
-        Frame frame = new Frame();
+        Main frame = new Main();
     }
 }
