@@ -57,4 +57,68 @@ public class CollisionChecker {
         }
 
     }
+
+    public int checkObject(Entity entity, boolean player){
+        int index = 999;
+
+        for(int i = 0; i < gamePanel.obj.length; i++){
+            if (gamePanel.obj[i] != null){
+                //Get entity's bodysolidity:
+                entity.bodySolidity.x = entity.worldX + entity.bodySolidity.x;
+                entity.bodySolidity.y = entity.worldY + entity.bodySolidity.y;
+
+                //Get object's bodySolidity
+                gamePanel.obj[i].bodySolidity.x = gamePanel.obj[i].worldX + gamePanel.obj[i].bodySolidity.x;
+                gamePanel.obj[i].bodySolidity.y = gamePanel.obj[i].worldY + gamePanel.obj[i].bodySolidity.y;
+
+                switch (entity.direction){
+                    case "up":
+                        entity.bodySolidity.y -= entity.speed;
+                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){ //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+                            if(gamePanel.obj[i].collision){
+                                entity.collisionOn = true;
+                            }
+                            if (player){
+                                index = i;
+                            }
+                        }break;
+                    case "down":
+                        entity.bodySolidity.y += entity.speed;
+                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
+                            if(gamePanel.obj[i].collision){
+                                entity.collisionOn = true;
+                            }
+                            if (player){
+                                index = i;
+                            }
+                        }break;
+                    case "left":
+                        entity.bodySolidity.x -= entity.speed;
+                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
+                            if(gamePanel.obj[i].collision){
+                                entity.collisionOn = true;
+                            }
+                            if (player){
+                                index = i;
+                            }
+                        }break;
+                    case "right":
+                        entity.bodySolidity.x += entity.speed;
+                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
+                            if(gamePanel.obj[i].collision){
+                                entity.collisionOn = true;
+                            }
+                            if (player){
+                                index = i;
+                            }
+                        }break;
+                }
+                entity.bodySolidity.x = entity.bodySolidityDefaultX;
+                entity.bodySolidity.y = entity.bodySolidityDefaultY;
+                gamePanel.obj[i].bodySolidity.x = gamePanel.obj[i].bodySolidityDefaultX;
+                gamePanel.obj[i].bodySolidity.y = gamePanel.obj[i].bodySolidityDefaultY;
+            }
+        }
+        return index;
+    }
 }

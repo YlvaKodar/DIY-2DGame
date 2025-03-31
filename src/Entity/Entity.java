@@ -12,7 +12,12 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 1;
 
-    //Character solidity
+    //SOLIDITY
     public Rectangle bodySolidity;
+    public int bodySolidityDefaultX, bodySolidityDefaultY;
     public boolean collisionOn = false;
+
+    //LIFE
+    public int maxLife;
+    public int life;
 }

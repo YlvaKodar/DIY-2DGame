@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    //Screen settings
+    //SCREEN SETTINGS
     final int originalTileSize = 16; //Standard
     final int scale = 3; //För att nya datorer är bättre och 16 bitar blir pyttelitet. Standard i retrospel x 3.
 
@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int screenWidth = maxScreenCol * tileSize;
     public int screenHeight = maxScreenRow * tileSize;
 
-    //World settings
+    //WORLD SETTINGS
     public final int maxWorldCol = 65;
     public final int maxWorldRow = 49;
     public final int worldWidth = maxWorldCol * tileSize;
@@ -29,13 +29,22 @@ public class GamePanel extends JPanel implements Runnable {
     //FPS = frames per second
     final int fps = 60;
 
+    //SYSTEM
     TileManager tileManager = new TileManager(this);
-    KeyHandler keyHandler = new KeyHandler();
-    Thread gameThread;
+    KeyHandler keyHandler = new KeyHandler(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+    Thread gameThread;
+
+    //ENTITY AND OBJECT
     public Player player = new Player(this, keyHandler);
     public SuperObject obj[] = new SuperObject[10];
+
+    //GAME STATE
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -47,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setUpGame(){
         assetSetter.setObject();
-
+        gameState = playState;
     }
 
     @Override
@@ -86,7 +95,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        player.update();
+        if (gameState == playState){
+            player.update();
+        }
+        if (gameState == pauseState){
+            //TODO
+        }
     }
 
     public void paintComponent(Graphics g){

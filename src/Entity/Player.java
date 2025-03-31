@@ -16,6 +16,11 @@ public class Player extends Entity{
 
     public final int screenX, screenY;
 
+    //Hur vill jag göra med det här?
+    int hasBomb = 0;
+    int hasMatch = 0;
+    int hasAxe = 0;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
@@ -24,7 +29,8 @@ public class Player extends Entity{
         screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize/2); //Det är kameran.
 
         bodySolidity = new Rectangle(8, 22, 32, 24); //x och y: koordinater för startpixel av players solidity.
-
+        bodySolidityDefaultX = bodySolidity.x;
+        bodySolidityDefaultY = bodySolidity.y;
         setDefaultValues();
         getPlayerImage();
     }
@@ -51,6 +57,8 @@ public class Player extends Entity{
        worldY = gamePanel.tileSize * 4 ;
        speed = 4;
        direction = "down";
+       maxLife = 9;
+       life = maxLife;
     }
 
     public void update() {
@@ -73,6 +81,10 @@ public class Player extends Entity{
             collisionOn = false;
             gamePanel.collisionChecker.checkTile(this);
 
+            //CHECK OBJECT COLLISION ...
+            int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+            pickUpObject(objIndex);
+
             //... IF FALSE, MOVE:
             if (!collisionOn) {
                 switch (direction) {
@@ -90,6 +102,44 @@ public class Player extends Entity{
                 } else if (spriteNum == 2)
                     spriteNum = 1;
                 spriteCounter = 0;
+            }
+        }
+    }
+
+    public void pickUpObject(int index) {
+
+        if (index != 999){
+            String objectName = gamePanel.obj[index].name;
+
+            switch (objectName) {
+                case "Bomb":
+                    hasBomb++;
+                    gamePanel.obj[index] = null;
+                    break;
+                case "Stone":
+                    if(hasBomb > 0 && hasMatch > 0) {//Ska först brinna och sprängas obvi.
+                        hasMatch--;
+                        hasBomb--;
+                        gamePanel.obj[index] = null;
+                    }
+                    System.out.println("Bombs: " + hasBomb + " Matches: " + hasMatch);
+                    break;
+                case "Cream":
+                    speed -= 1;
+                    gamePanel.obj[index] = null;
+                    break;
+                case "Fish":
+                    speed += 1;
+                    gamePanel.obj[index] = null;
+                    break;
+                case "Match":
+                    hasMatch++;
+                    gamePanel.obj[index] = null;
+                    break;
+                case "Axe":
+                    hasAxe++;
+                    gamePanel.obj[index] = null;
+                    break;
             }
         }
     }

@@ -2,12 +2,9 @@ package Main;
 import Object.OBJ_Axe;
 import Object.OBJ_Cream;
 import Object.OBJ_Fish;
-import Object.OBJ_Bomb1;
+import Object.OBJ_Bomb;
 import Object.OBJ_Match;
 import Object.OBJ_Stone;
-import Object.OBJ_Bomb2;
-import Object.OBJ_Explosion;
-import Object.OBJ_Gravel;
 
 public class AssetSetter {
     GamePanel gamePanel;
@@ -33,7 +30,7 @@ public class AssetSetter {
         gamePanel.obj[3].worldX = 10 * gamePanel.tileSize;
         gamePanel.obj[3].worldY = 40 * gamePanel.tileSize;
 
-        gamePanel.obj[4] = new OBJ_Bomb1();
+        gamePanel.obj[4] = new OBJ_Bomb();
         gamePanel.obj[4].worldX = 6 * gamePanel.tileSize;
         gamePanel.obj[4].worldY = 23 * gamePanel.tileSize;
 
