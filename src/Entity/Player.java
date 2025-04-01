@@ -2,30 +2,33 @@ package Entity;
 
 import Main.GamePanel;
 import Main.KeyHandler;
+import Main.UI;
+import Main.UtilityTool;
+import jdk.jshell.execution.Util;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class Player extends Entity{
 
-    GamePanel gamePanel;
     KeyHandler keyHandler;
 
     public final int screenX, screenY;
 
     //Hur vill jag göra med det här?
-    int hasBomb = 0;
-    int hasMatch = 0;
-    int hasAxe = 0;
+    public int hasBomb = 0;
+    public int hasMatch = 0;
+    public int hasAxe = 0;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
-        this.gamePanel = gamePanel;
+        super(gamePanel);
         this.keyHandler = keyHandler;
 
-        screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize/2); //Det här behöver vi nog ändra sedan.
+        screenX = gamePanel.screenWidth / 2 - (gamePanel.tileSize/2);
         screenY = gamePanel.screenHeight / 2 - (gamePanel.tileSize/2); //Det är kameran.
 
         bodySolidity = new Rectangle(8, 22, 32, 24); //x och y: koordinater för startpixel av players solidity.
@@ -36,20 +39,14 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
-        try {
-            down1 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatFrontLeft.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatFrontRight.png"));
-            up1 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatBackLeft.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatBackRight.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatLeftUp.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatLeftDown.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatRightUp.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/Player/HeroCatRightDown.png"));
-
-        }catch (IOException e){
-            e.printStackTrace();
-            System.out.println("Nåt är fel i getPlayerImage.");
-        }
+            down1 = setUp("/Player/HeroCatFrontLeft.png");
+            down2 = setUp("/Player/HeroCatFrontRight.png");
+            up1 = setUp("/Player/HeroCatBackLeft.png");
+            up2 = setUp("/Player/HeroCatBackRight.png");
+            left1 = setUp("/Player/HeroCatLeftUp.png");
+            left2 = setUp("/Player/HeroCatLeftDown.png");
+            right1 = setUp("/Player/HeroCatRightUp.png");
+            right2 = setUp("/Player/HeroCatRightDown.png");
     }
 
     public void setDefaultValues() {
@@ -61,6 +58,7 @@ public class Player extends Entity{
        life = maxLife;
     }
 
+    @Override
     public void update() {
 
         if (keyHandler.down || keyHandler.up || keyHandler.left || keyHandler.right) {
@@ -84,6 +82,10 @@ public class Player extends Entity{
             //CHECK OBJECT COLLISION ...
             int objIndex = gamePanel.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
+
+            //CHECK ENTITY COLLISION ...
+            int entityIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
+            interactEntity(entityIndex);
 
             //... IF FALSE, MOVE:
             if (!collisionOn) {
@@ -113,6 +115,7 @@ public class Player extends Entity{
 
             switch (objectName) {
                 case "Bomb":
+                    gamePanel.ui.showMessage("Picked up bomb.");
                     hasBomb++;
                     gamePanel.obj[index] = null;
                     break;
@@ -137,10 +140,17 @@ public class Player extends Entity{
                     gamePanel.obj[index] = null;
                     break;
                 case "Axe":
+                    gamePanel.ui.showMessage("Picked up axe.");
                     hasAxe++;
                     gamePanel.obj[index] = null;
                     break;
             }
+        }
+    }
+
+    public void interactEntity(int entityIndex) {
+        if (entityIndex != 999) {
+            System.out.println("You dead.");
         }
     }
 
@@ -175,9 +185,25 @@ public class Player extends Entity{
                 break;
         }
 
-        g2.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+        int x = screenX;
+        int y = screenY;
 
-//        g2.setColor(Color.WHITE);
-//        g2.fillRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
+        if(screenX > worldX){
+            x = worldX;
+        }
+        if(screenY > worldY){
+            y = worldY;
+        }
+
+        int rightOffset = gamePanel.screenWidth - screenX;
+        if (rightOffset > gamePanel.worldWidth - worldX){
+            x = gamePanel.screenWidth - (gamePanel.worldWidth - worldX);
+        }
+        int bottomOffset = gamePanel.screenHeight - screenY;
+        if (bottomOffset > gamePanel.worldHeight - worldY){
+            y = gamePanel.screenHeight - (gamePanel.worldHeight - worldY);
+        }
+
+        g2.drawImage(image, x, y, null);
     }
 }

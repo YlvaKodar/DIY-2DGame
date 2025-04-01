@@ -1,12 +1,14 @@
 package Tile;
 
 import Main.GamePanel;
+import Main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class TileManager {
     GamePanel gamePanel;
@@ -22,31 +24,25 @@ public class TileManager {
     }
 
     public void getTileImage() {
-        try {
-            tiles[0] = new Tile();
-            tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/grass1.png"));
-            tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/wall1.png"));
-            tiles[1].collision = true;
-            tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/water1.png"));
-            tiles[2].collision = true;
-            tiles[3] = new Tile();
-            tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/sand.png"));
-            tiles[4] = new Tile();
-            tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/earth.png"));
-            tiles[5] = new Tile();
-            tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/spruce.png"));
-            tiles[5].collision = true;
-            tiles[6] = new Tile();
-            tiles[6].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/appletree.png"));
-            tiles[6].collision = true;
-            tiles[7] = new Tile();
-            tiles[7].image = ImageIO.read(getClass().getResourceAsStream("/Tiles/cactus.png"));
-            tiles[7].collision = true;
 
+            setUp(0, "grass1", false);
+            setUp(1, "wall1", true);
+            setUp(2, "water1", true);
+            setUp(3, "sand", false);
+            setUp(4, "earth", false);
+            setUp(5, "spruce", true);
+            setUp(6, "appletree", true);
+            setUp(7, "cactus", true);
+    }
+
+    public void setUp(int index, String imageName, boolean collision){
+        UtilityTool uTool = new UtilityTool();
+        try{
+            tiles[index] = new Tile();
+            tiles[index].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Tiles/" + imageName + ".png")));
+            tiles[index].image = uTool.scaledImage(tiles[index].image, gamePanel.tileSize, gamePanel.tileSize);
+            tiles[index].collision = collision;
         }catch (Exception e) {
-            System.out.println("Fel i tileManager");
             e.printStackTrace();
         }
     }
@@ -94,10 +90,33 @@ public class TileManager {
             int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenX; //Om spelare är på x10, y10, ska tile x0, y0 ritas 10 upp/vänser om spelare.
             int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY; //På det plussas player.screenXY, som räddar kartans slut från att hamna mitt på screenen.
 
+            //Camera move-stop:
+            if (gamePanel.player.screenX > gamePanel.player.worldX){
+                screenX = worldX;
+            }
+            if (gamePanel.player.screenY > gamePanel.player.worldY){
+                screenY = worldY;
+            }
+
+            int rightOffset = gamePanel.screenWidth - gamePanel.player.screenX;
+            if (rightOffset > gamePanel.worldWidth - gamePanel.player.worldX){
+                screenX = gamePanel.screenWidth - (gamePanel.worldWidth - worldX);
+            }
+            int bottomOffset = gamePanel.screenHeight - gamePanel.player.screenY;
+            if (bottomOffset > gamePanel.worldHeight - gamePanel.player.worldY){
+                screenY = gamePanel.screenHeight - (gamePanel.worldHeight - worldY);
+            }
+
             // Rita bara om det behövs (plus en.)
             if (worldX + gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX && worldX - gamePanel.tileSize < gamePanel.player.worldX + gamePanel.player.screenX &&
             worldY + gamePanel.tileSize > gamePanel.player.worldY - gamePanel.player.screenY && worldY - gamePanel.tileSize < gamePanel.player.worldY + gamePanel.player.screenY) {
-                g2.drawImage(tiles[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+                g2.drawImage(tiles[tileNum].image, screenX, screenY,null);
+            }
+            else if(gamePanel.player.screenX > gamePanel.player.worldX ||
+                    gamePanel.player.screenY > gamePanel.player.worldY ||
+                    rightOffset > gamePanel.worldWidth - gamePanel.player.worldX ||
+                    bottomOffset > gamePanel.worldHeight - gamePanel.player.worldY){
+                g2.drawImage(tiles[tileNum].image, screenX, screenY,null);
             }
 
             worldCol++;

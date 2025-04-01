@@ -121,4 +121,93 @@ public class CollisionChecker {
         }
         return index;
     }
+
+    public int checkEntity(Entity entity, Entity[] target){
+        int index = 999;
+
+        for(int i = 0; i < target.length; i++){
+            if (target[i] != null){
+                //Get entity's bodysolidity:
+                entity.bodySolidity.x = entity.worldX + entity.bodySolidity.x;
+                entity.bodySolidity.y = entity.worldY + entity.bodySolidity.y;
+
+                //Get object's bodySolidity
+                target[i].bodySolidity.x = target[i].worldX + target[i].bodySolidity.x;
+                target[i].bodySolidity.y = target[i].worldY + target[i].bodySolidity.y;
+
+                switch (entity.direction){
+                    case "up":
+                        entity.bodySolidity.y -= entity.speed;
+                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){ //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+                                entity.collisionOn = true;
+                                index = i;
+                        }break;
+                    case "down":
+                        entity.bodySolidity.y += entity.speed;
+                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
+                                entity.collisionOn = true;
+                                index = i;
+                        }break;
+                    case "left":
+                        entity.bodySolidity.x -= entity.speed;
+                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
+                                entity.collisionOn = true;
+                                index = i;
+                        }break;
+                    case "right":
+                        entity.bodySolidity.x += entity.speed;
+                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
+                        entity.collisionOn = true;
+                        index = i;
+                        }break;
+                }
+                entity.bodySolidity.x = entity.bodySolidityDefaultX;
+                entity.bodySolidity.y = entity.bodySolidityDefaultY;
+                target[i].bodySolidity.x = target[i].bodySolidityDefaultX;
+                target[i].bodySolidity.y = target[i].bodySolidityDefaultY;
+            }
+        }
+        return index;
+    }
+
+    public void checkPlayer(Entity entity){
+        //Get entity's bodysolidity:
+        entity.bodySolidity.x = entity.worldX + entity.bodySolidity.x;
+        entity.bodySolidity.y = entity.worldY + entity.bodySolidity.y;
+
+        //Get object's bodySolidity
+        gamePanel.player.bodySolidity.x = gamePanel.player.worldX + gamePanel.player.bodySolidity.x;
+        gamePanel.player.bodySolidity.y = gamePanel.player.worldY + gamePanel.player.bodySolidity.y;
+
+        switch (entity.direction) {
+            case "up":
+                entity.bodySolidity.y -= entity.speed;
+                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) { //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+                    entity.collisionOn = true;
+                }
+                break;
+            case "down":
+                entity.bodySolidity.y += entity.speed;
+                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "left":
+                entity.bodySolidity.x -= entity.speed;
+                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "right":
+                entity.bodySolidity.x += entity.speed;
+                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
+                    entity.collisionOn = true;
+                }
+                break;
+        }
+        entity.bodySolidity.x = entity.bodySolidityDefaultX;
+        entity.bodySolidity.y = entity.bodySolidityDefaultY;
+        gamePanel.player.bodySolidity.x = gamePanel.player.bodySolidityDefaultX;
+        gamePanel.player.bodySolidity.y = gamePanel.player.bodySolidityDefaultY;
+    }
 }
