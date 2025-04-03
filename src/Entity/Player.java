@@ -87,6 +87,9 @@ public class Player extends Entity{
             int entityIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
             interactEntity(entityIndex);
 
+            //CHECK EVENT
+            gamePanel.eventHandler.checkEvent();
+
             //... IF FALSE, MOVE:
             if (!collisionOn) {
                 switch (direction) {

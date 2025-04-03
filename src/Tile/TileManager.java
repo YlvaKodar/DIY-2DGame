@@ -33,6 +33,7 @@ public class TileManager {
             setUp(5, "spruce", true);
             setUp(6, "appletree", true);
             setUp(7, "cactus", true);
+            setUp(8, "danger", false);
     }
 
     public void setUp(int index, String imageName, boolean collision){
