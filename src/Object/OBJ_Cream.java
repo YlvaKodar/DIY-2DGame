@@ -10,8 +10,8 @@ public class OBJ_Cream extends SuperObject{
         this.gamePanel = gamePanel;
         name = "Cream";
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/cream.png")));
-            utTool.scaledImage(image, gamePanel.tileSize, gamePanel.tileSize);
+            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/cream.png"))),
+                    gamePanel.tileSize, gamePanel.tileSize);
         }catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,8 +10,10 @@ public class OBJ_Stone extends SuperObject{
         this.gamePanel = gamePanel;
         name = "Stone";
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/stone.png")));
-            utTool.scaledImage(image, gamePanel.tileSize, gamePanel.tileSize);
+            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/stone.png"))),
+                    gamePanel.tileSize, gamePanel.tileSize);
+            image2 = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/gravel.png"))),
+                    gamePanel.tileSize, gamePanel.tileSize);
         }catch (Exception e) {
             e.printStackTrace();
         }

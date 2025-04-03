@@ -10,8 +10,8 @@ public class OBJ_Match extends SuperObject{
         name = "Match";
         this.gamePanel = gamePanel;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/match.png")));
-            utTool.scaledImage(image, gamePanel.tileSize, gamePanel.tileSize);
+            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/match.png"))),
+            gamePanel.tileSize, gamePanel.tileSize);
         }catch (Exception e) {
             e.printStackTrace();
         }

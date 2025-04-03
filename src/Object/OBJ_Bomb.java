@@ -11,8 +11,12 @@ public class OBJ_Bomb extends SuperObject{
         name = "Bomb";
         this.gamePanel = gamePanel;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/bomb1.png")));
-            utTool.scaledImage(image, gamePanel.tileSize, gamePanel.tileSize);
+            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/bomb1.png")))
+                    , gamePanel.tileSize, gamePanel.tileSize);
+            image2 = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/bomb2.png"))),
+                    gamePanel.tileSize, gamePanel.tileSize);
+            image3 = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/explosion.png"))),
+                    gamePanel.tileSize, gamePanel.tileSize);
         }catch (Exception e) {
             e.printStackTrace();
         }

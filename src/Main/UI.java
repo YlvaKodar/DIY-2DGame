@@ -14,7 +14,7 @@ public class UI {
     Font arial_40, arial_80B;
 
     //Gammal
-    BufferedImage heartImage, bombImage, matchImage, axeImage;
+    BufferedImage heartFull, heartEmpty, bombImage, bombLitImage, explosionImage, matchImage, axeImage;
     int timer = 0;
 
     //Senare
@@ -31,15 +31,21 @@ public class UI {
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
 
-        //Äldre:
-        OBJ_Bomb bomb = new OBJ_Bomb(gamePanel);
-        OBJ_Match match = new OBJ_Match(gamePanel);
-        OBJ_Heart heart = new OBJ_Heart(gamePanel);
-        OBJ_Axe axe = new OBJ_Axe(gamePanel);
+        SuperObject heart = new OBJ_Heart(gamePanel);
+        heartFull = heart.image;
+        heartEmpty = heart.image2;
 
+        SuperObject bomb = new OBJ_Bomb(gamePanel);
         bombImage = bomb.image;
+        bombLitImage = bomb.image2;
+        explosionImage = bomb.image3;
+
+
+        //Äldre:
+        SuperObject match = new OBJ_Match(gamePanel);
+        SuperObject axe = new OBJ_Axe(gamePanel);
+
         matchImage = match.image;
-        heartImage = heart.image;
         axeImage = axe.image;
 
     }
@@ -56,17 +62,6 @@ public class UI {
         g2.setColor(Color.WHITE);
 
         //Första versionen minus text:
-        //Hearts
-        g2.drawImage(heartImage, gamePanel.tileSize/2, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 3, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 4, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 5, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 6, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 7, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 8, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-        g2.drawImage(heartImage, gamePanel.tileSize/2 * 9, gamePanel.tileSize/2, gamePanel.tileSize, gamePanel.tileSize, null);
-
         //Inventory
         g2.drawImage(bombImage, gamePanel.tileSize * 9, gamePanel.tileSize/6, gamePanel.tileSize, gamePanel.tileSize, null);
         g2.drawString(": " + gamePanel.player.hasBomb, gamePanel.tileSize * 10, 50);
@@ -87,17 +82,28 @@ public class UI {
             }
         }
 
-
        //Under: Senare versionen
         if(gamePanel.gameState == gamePanel.playState){
-            //TODO
+            drawPlayerLife();
         }
         if (gamePanel.gameState == gamePanel.pauseState) {
+            drawPlayerLife();
             drawPauseScreen();
         }
     }
 
-
+    public void drawPlayerLife(){
+        int x = gamePanel.tileSize/3;
+        int y = gamePanel.tileSize/3;
+        for (int i = 0; i < gamePanel.player.maxLife; i++){
+            if (i < gamePanel.player.life){
+                g2.drawImage(heartFull, x, y,null);
+            }
+            else
+                g2.drawImage(heartEmpty, x, y,null);
+            x += gamePanel.tileSize - gamePanel.tileSize/3;
+        }
+    }
 
     public void drawPauseScreen(){
         String text = "PAUSED";
