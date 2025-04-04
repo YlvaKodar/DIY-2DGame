@@ -1,10 +1,9 @@
 package Main;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.text.DecimalFormat;
 import Object.*;
+import Entity.*;
 
 
 public class UI {
@@ -31,19 +30,19 @@ public class UI {
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80B = new Font("Arial", Font.BOLD, 80);
 
-        SuperObject heart = new OBJ_Heart(gamePanel);
+        Entity heart = new OBJ_Heart(gamePanel);
         heartFull = heart.image;
         heartEmpty = heart.image2;
 
-        SuperObject bomb = new OBJ_Bomb(gamePanel);
+        Entity bomb = new OBJ_Bomb(gamePanel);
         bombImage = bomb.image;
         bombLitImage = bomb.image2;
         explosionImage = bomb.image3;
 
 
         //Äldre:
-        SuperObject match = new OBJ_Match(gamePanel);
-        SuperObject axe = new OBJ_Axe(gamePanel);
+        Entity match = new OBJ_Match(gamePanel);
+        Entity axe = new OBJ_Axe(gamePanel);
 
         matchImage = match.image;
         axeImage = axe.image;

@@ -2,11 +2,9 @@ package Main;
 
 import Entity.*;
 import Tile.TileManager;
-import Object.SuperObject;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.stream.IntStream;
+import java.util.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -40,8 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyHandler);
-    public SuperObject obj[] = new SuperObject[10];
+    public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[5];
+    ArrayList<Entity> entityList = new ArrayList<>();
 
     //GAME STATE
     public int gameState;
@@ -117,20 +116,27 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g; //Convert Graphics to Graphics2D
 
+//        //Inför title screen
+//        if (gameState == titleState){
+//            ui.draw(g2);
+//        }
+//        else {
+
         //TILE
         tileManager.draw(g2);   //Före player -- rita tile first, annars syns inte player för tile ritas på.
 
-        //OBJECT
-        IntStream.range(0, obj.length).filter(i -> obj[i] != null).forEach(i -> obj[i].draw(g2, this));
+        //ADD ENTITIES TO LIST
+        entityList.add(player);
+        Arrays.stream(npc).filter(Objects::nonNull).forEach(entityList::add);
+        Arrays.stream(obj).filter(Objects::nonNull).forEach(entityList::add);
 
-        //NPC
-        IntStream.range(0, npc.length).filter(i -> npc[i] != null).forEach(i -> npc[i].draw(g2));
+        entityList.sort(Comparator.comparing(e -> e.worldY));
+        entityList.forEach(e -> e.draw(g2));
+        entityList.clear();
 
-        //PLAYER
-        player.draw(g2);
-
-        //UI
-        ui.draw(g2);
+            //UI
+            ui.draw(g2);
+//        }
 
         g2.dispose(); //Dispose of graphic context = spar memory
     }

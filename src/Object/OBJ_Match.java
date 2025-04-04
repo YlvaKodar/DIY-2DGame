@@ -1,19 +1,13 @@
 package Object;
 
 import Main.GamePanel;
-
-import javax.imageio.ImageIO;
-import java.util.Objects;
+import Entity.*;
 
 public class OBJ_Match extends SuperObject{
     public OBJ_Match(GamePanel gamePanel){
+        super(gamePanel);
         name = "Match";
-        this.gamePanel = gamePanel;
-        try {
-            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/match.png"))),
-            gamePanel.tileSize, gamePanel.tileSize);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        down1 = setUp("/Stuff/match.png");
+        image = down1; //Temporär lösning
     }
 }

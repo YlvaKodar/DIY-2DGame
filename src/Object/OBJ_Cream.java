@@ -1,19 +1,12 @@
 package Object;
 
 import Main.GamePanel;
-
-import javax.imageio.ImageIO;
-import java.util.Objects;
+import Entity.*;
 
 public class OBJ_Cream extends SuperObject{
     public OBJ_Cream(GamePanel gamePanel){
-        this.gamePanel = gamePanel;
+        super(gamePanel);
         name = "Cream";
-        try {
-            image = utTool.scaledImage(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/Stuff/cream.png"))),
-                    gamePanel.tileSize, gamePanel.tileSize);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        down1 = setUp("/Stuff/cream.png");
     }
 }
