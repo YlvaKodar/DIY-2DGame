@@ -83,9 +83,13 @@ public class Player extends Entity{
             int objIndex = gamePanel.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            //CHECK ENTITY COLLISION ...
+            //CHECK NPC COLLISION ...
             int entityIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
             interactEntity(entityIndex);
+
+            //CHECK MONSTER COLLISION ...
+            int monIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.mon);
+            monsterContact(monIndex);
 
             //CHECK EVENT
             gamePanel.eventHandler.checkEvent();
@@ -107,6 +111,13 @@ public class Player extends Entity{
                 } else if (spriteNum == 2)
                     spriteNum = 1;
                 spriteCounter = 0;
+            }
+        }
+        if (invincible){
+            incincibleCounter++;
+            if (incincibleCounter > 60) {
+                incincibleCounter = 0;
+                invincible = false;
             }
         }
     }
@@ -154,6 +165,15 @@ public class Player extends Entity{
     public void interactEntity(int entityIndex) {
         if (entityIndex != 999) {
             System.out.println("You dead.");
+        }
+    }
+
+    public void monsterContact(int monIndex) {
+        if (monIndex != 999){
+            if (!invincible){
+                life -= 1;
+                invincible = true;
+            }
         }
     }
 
@@ -207,6 +227,19 @@ public class Player extends Entity{
             y = gamePanel.screenHeight - (gamePanel.worldHeight - worldY);
         }
 
+        if (invincible){
+            if (incincibleCounter % 6 == 0){
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
+            }
+        }
+
         g2.drawImage(image, x, y, null);
+        //RESET ALPHA
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        //DEBUG
+//        g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+//        g2.setColor(Color.WHITE);
+//        g2.drawString("Invinciblecounter: " + incincibleCounter, 10, 400);
     }
 }

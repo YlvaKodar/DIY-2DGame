@@ -21,18 +21,22 @@ public class Entity {
     public int spriteNum = 1;
     public int actionLockCounter = 0;
 
+    public String name;
+    public int type;
 
     //SOLIDITY
     public boolean collisionOn = false;
     public Rectangle bodySolidity;
     public int bodySolidityDefaultX, bodySolidityDefaultY;
+
     //LIFE
     public int life;
+    public int maxLife;
+    public boolean invincible = false;
+    int incincibleCounter;
 
     //OBJECTS
-    public int maxLife;
     public BufferedImage image, image2, image3;
-    public String name;
     public boolean collision = false;
 
     public Entity(GamePanel gamePanel){
@@ -78,7 +82,17 @@ public class Entity {
         collisionOn = false;
         gamePanel.collisionChecker.checkTile(this);
         gamePanel.collisionChecker.checkObject(this, false);
-       gamePanel.collisionChecker.checkPlayer(this);
+        gamePanel.collisionChecker.checkEntity(this, gamePanel.npc);
+        gamePanel.collisionChecker.checkEntity(this, gamePanel.mon);
+        boolean contactPLayer = gamePanel.collisionChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPLayer) {
+            if (!gamePanel.player.invincible){
+                gamePanel.player.life--;
+                gamePanel.player.invincible = true;
+
+            }
+        }
 
         if (!collisionOn) {
             switch (direction) {

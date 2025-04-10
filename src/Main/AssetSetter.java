@@ -1,11 +1,7 @@
 package Main;
-import Entity.NPC_Rat;
-import Object.OBJ_Axe;
-import Object.OBJ_Cream;
-import Object.OBJ_Fish;
-import Object.OBJ_Bomb;
-import Object.OBJ_Match;
-import Object.OBJ_Stone;
+import Entity.*;
+import Monster.*;
+import Object.*;
 
 public class AssetSetter {
     GamePanel gamePanel;
@@ -41,8 +37,13 @@ public class AssetSetter {
     }
 
     public void setNPC(){
-        gamePanel.npc[0] = new NPC_Rat(gamePanel);
-        gamePanel.npc[0].worldX = gamePanel.tileSize * 5;
-        gamePanel.npc[0].worldY = gamePanel.tileSize * 5;
+    }
+    public void setMonster(){
+        gamePanel.mon[0] = new MON_Rat(gamePanel);
+        gamePanel.mon[0].worldX = gamePanel.tileSize * 15;
+        gamePanel.mon[0].worldY = gamePanel.tileSize * 10;
+        gamePanel.mon[1] = new NPC_Example(gamePanel);
+        gamePanel.mon[1].worldX = gamePanel.tileSize * 5;
+        gamePanel.mon[1].worldY = gamePanel.tileSize * 5;
     }
 }

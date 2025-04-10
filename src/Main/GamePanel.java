@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Player player = new Player(this, keyHandler);
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[5];
+    public Entity mon[] = new Entity[15];
     ArrayList<Entity> entityList = new ArrayList<>();
 
     //GAME STATE
@@ -58,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUpGame(){
         assetSetter.setObject();
         assetSetter.setNPC();
+        assetSetter.setMonster();
         gameState = playState;
     }
 
@@ -100,11 +102,8 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == playState){
             player.update();
 
-            for (Entity entity:npc){
-                if (entity != null){
-                    entity.update();
-                }
-            }
+            Arrays.stream(npc).filter(Objects::nonNull).forEach(npc -> npc.update());
+            Arrays.stream(mon).filter(Objects::nonNull).forEach(mon -> mon.update());
 
         }
         if (gameState == pauseState){
@@ -125,10 +124,11 @@ public class GamePanel extends JPanel implements Runnable {
         //TILE
         tileManager.draw(g2);   //Före player -- rita tile first, annars syns inte player för tile ritas på.
 
-        //ADD ENTITIES TO LIST
+        //ADD ALL ENTITIES TO ONE LIST TO SORT AND DRAW
         entityList.add(player);
         Arrays.stream(npc).filter(Objects::nonNull).forEach(entityList::add);
         Arrays.stream(obj).filter(Objects::nonNull).forEach(entityList::add);
+        Arrays.stream(mon).filter(Objects::nonNull).forEach(entityList::add);
 
         entityList.sort(Comparator.comparing(e -> e.worldY));
         entityList.forEach(e -> e.draw(g2));

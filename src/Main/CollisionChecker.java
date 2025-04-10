@@ -55,7 +55,6 @@ public class CollisionChecker {
                     entity.collisionOn = true;
                 }
         }
-
     }
 
     public int checkObject(Entity entity, boolean player){
@@ -72,47 +71,22 @@ public class CollisionChecker {
                 gamePanel.obj[i].bodySolidity.y = gamePanel.obj[i].worldY + gamePanel.obj[i].bodySolidity.y;
 
                 switch (entity.direction){
-                    case "up":
-                        entity.bodySolidity.y -= entity.speed;
-                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){ //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
-                            if(gamePanel.obj[i].collision){
-                                entity.collisionOn = true;
-                            }
-                            if (player){
-                                index = i;
-                            }
-                        }break;
-                    case "down":
-                        entity.bodySolidity.y += entity.speed;
-                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
-                            if(gamePanel.obj[i].collision){
-                                entity.collisionOn = true;
-                            }
-                            if (player){
-                                index = i;
-                            }
-                        }break;
-                    case "left":
-                        entity.bodySolidity.x -= entity.speed;
-                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
-                            if(gamePanel.obj[i].collision){
-                                entity.collisionOn = true;
-                            }
-                            if (player){
-                                index = i;
-                            }
-                        }break;
-                    case "right":
-                        entity.bodySolidity.x += entity.speed;
-                        if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){
-                            if(gamePanel.obj[i].collision){
-                                entity.collisionOn = true;
-                            }
-                            if (player){
-                                index = i;
-                            }
-                        }break;
+                    case "up": entity.bodySolidity.y -= entity.speed; break;
+                    case "down": entity.bodySolidity.y += entity.speed; break;
+                    case "left": entity.bodySolidity.x -= entity.speed; break;
+                    case "right": entity.bodySolidity.x += entity.speed;
                 }
+
+                if (entity.bodySolidity.intersects(gamePanel.obj[i].bodySolidity)){ //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+                    if(gamePanel.obj[i].collision){
+                        entity.collisionOn = true;
+                    }
+                    if (player){
+                        index = i;
+                    }
+                }
+
+
                 entity.bodySolidity.x = entity.bodySolidityDefaultX;
                 entity.bodySolidity.y = entity.bodySolidityDefaultY;
                 gamePanel.obj[i].bodySolidity.x = gamePanel.obj[i].bodySolidityDefaultX;
@@ -136,31 +110,18 @@ public class CollisionChecker {
                 target[i].bodySolidity.y = target[i].worldY + target[i].bodySolidity.y;
 
                 switch (entity.direction){
-                    case "up":
-                        entity.bodySolidity.y -= entity.speed;
-                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){ //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
-                                entity.collisionOn = true;
-                                index = i;
-                        }break;
-                    case "down":
-                        entity.bodySolidity.y += entity.speed;
-                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
-                                entity.collisionOn = true;
-                                index = i;
-                        }break;
-                    case "left":
-                        entity.bodySolidity.x -= entity.speed;
-                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
-                                entity.collisionOn = true;
-                                index = i;
-                        }break;
-                    case "right":
-                        entity.bodySolidity.x += entity.speed;
-                        if (entity.bodySolidity.intersects(target[i].bodySolidity)){
+                    case "up": entity.bodySolidity.y -= entity.speed; break;
+                    case "down": entity.bodySolidity.y += entity.speed; break;
+                    case "left": entity.bodySolidity.x -= entity.speed; break;
+                    case "right": entity.bodySolidity.x += entity.speed;
+                }
+                if (entity.bodySolidity.intersects(target[i].bodySolidity)) { //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+                    if (target[i] != entity) {
                         entity.collisionOn = true;
                         index = i;
-                        }break;
+                    }
                 }
+
                 entity.bodySolidity.x = entity.bodySolidityDefaultX;
                 entity.bodySolidity.y = entity.bodySolidityDefaultY;
                 target[i].bodySolidity.x = target[i].bodySolidityDefaultX;
@@ -170,7 +131,9 @@ public class CollisionChecker {
         return index;
     }
 
-    public void checkPlayer(Entity entity){
+    public boolean checkPlayer(Entity entity){
+        boolean playerContact = false;
+
         //Get entity's bodysolidity:
         entity.bodySolidity.x = entity.worldX + entity.bodySolidity.x;
         entity.bodySolidity.y = entity.worldY + entity.bodySolidity.y;
@@ -180,34 +143,22 @@ public class CollisionChecker {
         gamePanel.player.bodySolidity.y = gamePanel.player.worldY + gamePanel.player.bodySolidity.y;
 
         switch (entity.direction) {
-            case "up":
-                entity.bodySolidity.y -= entity.speed;
-                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) { //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
-                    entity.collisionOn = true;
-                }
-                break;
-            case "down":
-                entity.bodySolidity.y += entity.speed;
-                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
-                    entity.collisionOn = true;
-                }
-                break;
-            case "left":
-                entity.bodySolidity.x -= entity.speed;
-                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
-                    entity.collisionOn = true;
-                }
-                break;
-            case "right":
-                entity.bodySolidity.x += entity.speed;
-                if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) {
-                    entity.collisionOn = true;
-                }
-                break;
+            case "up": entity.bodySolidity.y -= entity.speed; break;
+            case "down": entity.bodySolidity.y += entity.speed; break;
+            case "left": entity.bodySolidity.x -= entity.speed; break;
+            case "right": entity.bodySolidity.x += entity.speed;
         }
+
+        if (entity.bodySolidity.intersects(gamePanel.player.bodySolidity)) { //Intersect här och inte för tiles för att inte behöva kolla alla tiles, utan bara två.
+            entity.collisionOn = true;
+            playerContact = true;
+        }
+
         entity.bodySolidity.x = entity.bodySolidityDefaultX;
         entity.bodySolidity.y = entity.bodySolidityDefaultY;
         gamePanel.player.bodySolidity.x = gamePanel.player.bodySolidityDefaultX;
         gamePanel.player.bodySolidity.y = gamePanel.player.bodySolidityDefaultY;
+
+        return playerContact;
     }
 }
