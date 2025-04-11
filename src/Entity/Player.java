@@ -1,17 +1,10 @@
 package Entity;
 
-import Main.GamePanel;
-import Main.KeyHandler;
-import Main.UI;
-import Main.UtilityTool;
-import jdk.jshell.execution.Util;
-
-import javax.imageio.ImageIO;
+import Main.*;
+import Object.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
-
+import java.util.ArrayList;
 
 public class Player extends Entity{
 
@@ -23,6 +16,9 @@ public class Player extends Entity{
     public int hasBomb = 0;
     public int hasMatch = 0;
     public int hasAxe = 0;
+
+    public ArrayList<SuperObject> inventory = new ArrayList<SuperObject>();
+    public final int maxInventorySize = 5;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         super(gamePanel);
@@ -36,17 +32,18 @@ public class Player extends Entity{
         bodySolidityDefaultY = bodySolidity.y;
         setDefaultValues();
         getPlayerImage();
+        setItems();
     }
 
     public void getPlayerImage(){
-            down1 = setUp("/Player/HeroCatFrontLeft.png");
-            down2 = setUp("/Player/HeroCatFrontRight.png");
-            up1 = setUp("/Player/HeroCatBackLeft.png");
-            up2 = setUp("/Player/HeroCatBackRight.png");
-            left1 = setUp("/Player/HeroCatLeftUp.png");
-            left2 = setUp("/Player/HeroCatLeftDown.png");
-            right1 = setUp("/Player/HeroCatRightUp.png");
-            right2 = setUp("/Player/HeroCatRightDown.png");
+        down1 = setUp("/Player/HeroCatFrontLeft.png");
+        down2 = setUp("/Player/HeroCatFrontRight.png");
+        up1 = setUp("/Player/HeroCatBackLeft.png");
+        up2 = setUp("/Player/HeroCatBackRight.png");
+        left1 = setUp("/Player/HeroCatLeftUp.png");
+        left2 = setUp("/Player/HeroCatLeftDown.png");
+        right1 = setUp("/Player/HeroCatRightUp.png");
+        right2 = setUp("/Player/HeroCatRightDown.png");
     }
 
     public void setDefaultValues() {
@@ -56,6 +53,10 @@ public class Player extends Entity{
        direction = "down";
        maxLife = 9;
        life = maxLife;
+    }
+
+    public void setItems(){
+        //OM JAG VIL HA FRÅN BÖRJAN?
     }
 
     @Override
@@ -129,9 +130,12 @@ public class Player extends Entity{
 
             switch (objectName) {
                 case "Bomb":
-                    gamePanel.ui.showMessage("Picked up bomb.");
-                    hasBomb++;
-                    gamePanel.obj[index] = null;
+                    if (inventory.size() < maxInventorySize) {
+                        inventory.add(new OBJ_Bomb(gamePanel));
+                        hasBomb++;
+                        gamePanel.obj[index] = null;
+                    } else
+                        gamePanel.ui.showMessage("Inventory full.");
                     break;
                 case "Stone":
                     if(hasBomb > 0 && hasMatch > 0) {//Ska först brinna och sprängas obvi.
@@ -150,13 +154,20 @@ public class Player extends Entity{
                     gamePanel.obj[index] = null;
                     break;
                 case "Match":
-                    hasMatch++;
-                    gamePanel.obj[index] = null;
+                    if (inventory.size() < maxInventorySize) {
+                        inventory.add(new OBJ_Match(gamePanel));
+                        hasMatch++;
+                        gamePanel.obj[index] = null;
+                    } else
+                        gamePanel.ui.showMessage("Inventory full.");
                     break;
                 case "Axe":
-                    gamePanel.ui.showMessage("Picked up axe.");
-                    hasAxe++;
-                    gamePanel.obj[index] = null;
+                    if (inventory.size() < maxInventorySize) {
+                        inventory.add(new OBJ_Axe(gamePanel));
+                        hasAxe++;
+                        gamePanel.obj[index] = null;
+                    } else
+                        gamePanel.ui.showMessage("Inventory full.");
                     break;
             }
         }

@@ -42,7 +42,7 @@ public class AssetSetter {
         gamePanel.mon[0] = new MON_Rat(gamePanel);
         gamePanel.mon[0].worldX = gamePanel.tileSize * 15;
         gamePanel.mon[0].worldY = gamePanel.tileSize * 10;
-        gamePanel.mon[1] = new NPC_Example(gamePanel);
+        gamePanel.mon[1] = new MON_Rat(gamePanel);
         gamePanel.mon[1].worldX = gamePanel.tileSize * 5;
         gamePanel.mon[1].worldY = gamePanel.tileSize * 5;
     }
