@@ -17,23 +17,60 @@ public class TileManager {
 
     public TileManager(GamePanel panel) {
         this.gamePanel = panel;
-        tiles = new Tile[10];
+        tiles = new Tile[50];
         mapTileNum = new int[gamePanel.maxWorldCol][gamePanel.maxWorldRow];
         getTileImage();
         loadMap("/Maps/Map01.txt");
     }
 
     public void getTileImage() {
-
-            setUp(0, "grass1", false);
-            setUp(1, "wall1", true);
-            setUp(2, "water1", true);
-            setUp(3, "sand", false);
-            setUp(4, "earth", false);
-            setUp(5, "spruce", true);
-            setUp(6, "appletree", true);
-            setUp(7, "cactus", true);
-            setUp(8, "danger", false);
+        setUp(0, "danger", false);
+        setUp(1, "danger", false);
+        setUp(2, "danger", false);
+        setUp(3, "danger", false);
+        setUp(4, "danger", false);
+        setUp(5, "danger", false);
+        setUp(6, "danger", false);
+        setUp(7, "danger", false);
+        setUp(8, "danger", false);
+        setUp(9, "danger", false);
+        setUp(10, "wall1", true); //a
+        setUp(11, "wall1", true);
+        setUp(12, "grass2", false);
+        setUp(13, "grass1", false); //b
+        setUp(14, "water1", true);
+        setUp(15, "water1", true);
+        setUp(16, "riverbankNorth", true);
+        setUp(17, "riverbankSouth", true);
+        setUp(18, "riverbankEast", true);
+        setUp(19, "riverbankWest", true);
+        setUp(20, "riverbankNorthEast", true);
+        setUp(21, "riverbankNorthWest", true);
+        setUp(22, "riverbankSouthEast", true);
+        setUp(23, "riverbankSouthWest", true);
+        setUp(24, "sand", false); //d
+        setUp(25, "sand", false);
+        setUp(26, "sand", false);
+        setUp(27, "sand", false);
+        setUp(28, "sand", false);
+        setUp(29, "sand", false);
+        setUp(30, "sand", false);
+        setUp(31, "sand", false);
+        setUp(32, "sand", false);
+        setUp(33, "sand", false);
+        setUp(34, "earth", false); //c
+        setUp(35, "earth", false);
+        setUp(36, "earthbankNorth", false);
+        setUp(37, "earthbankSouth", false);
+        setUp(38, "earthbankEast", false);
+        setUp(39, "earthbankWest", false);
+        setUp(40, "earthbankNorthEast", false);
+        setUp(41, "earthbankNorthWest", false);
+        setUp(42, "earthbankSouthEast", false);
+        setUp(43, "earthbankSouthWest", false);
+        setUp(44, "appletree", true);
+        setUp(45, "spruce", true);
+        setUp(46, "cactus", true);
     }
 
     public void setUp(int index, String imageName, boolean collision){
