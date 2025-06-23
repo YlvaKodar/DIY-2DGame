@@ -119,7 +119,7 @@ public class UI {
     }
 
     public int getItemIndexFromInventory(){
-        int itemIndex = slotCol + (slotRow * 5); //In case jag vill göra störe inventory sen.
+        int itemIndex = slotCol + (slotRow * 5); //In case jag vill göra större inventory sen.
         return itemIndex;
     }
     public void drawPlayerLife(){

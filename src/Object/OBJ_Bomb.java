@@ -3,6 +3,8 @@ package Object;
 import Main.GamePanel;
 import Entity.*;
 
+import java.awt.image.BufferedImage;
+
 public class OBJ_Bomb extends SuperObject{
 
     public OBJ_Bomb(GamePanel gamePanel){
@@ -13,5 +15,9 @@ public class OBJ_Bomb extends SuperObject{
         image = down1; //temporär lösning
         image2 = setUp("/Stuff/bomb2.png");
         image3 = setUp("/Stuff/explosion.png");
+    }
+
+    public void lightBomb(){
+        this.image = image2;
     }
 }

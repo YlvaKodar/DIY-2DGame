@@ -4,6 +4,7 @@ import Main.*;
 import Object.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class Player extends Entity{
@@ -14,6 +15,7 @@ public class Player extends Entity{
 
     //Hur vill jag göra med det här?
     public int hasBomb = 0;
+    public int hasLitBomb = 0;
     public int hasMatch = 0;
     public int hasAxe = 0;
 
@@ -131,19 +133,34 @@ public class Player extends Entity{
             switch (objectName) {
                 case "Bomb":
                     if (inventory.size() < maxInventorySize) {
-                        inventory.add(new OBJ_Bomb(gamePanel));
-                        hasBomb++;
+                        OBJ_Bomb bomb = new OBJ_Bomb(gamePanel);
+                        //temp:
+                        if (hasMatch > 0){
+                            System.out.println(hasMatch);
+                            inventory.removeIf(obj -> obj.name.equals("Match"));
+                            bomb.lightBomb();
+                            hasMatch--;
+                            hasLitBomb ++;
+                        }else
+                            hasBomb++;
+
+                        inventory.add(bomb);
                         gamePanel.obj[index] = null;
+
                     } else
                         gamePanel.ui.showMessage("Inventory full.");
                     break;
                 case "Stone":
-                    if(hasBomb > 0 && hasMatch > 0) {//Ska först brinna och sprängas obvi.
-                        hasMatch--;
-                        hasBomb--;
-                        gamePanel.obj[index] = null;
+                    if(hasLitBomb > 0) {//Ska först brinna och sprängas obvi.
+                        hasLitBomb--;
+                        //Provar:
+                       // inventory.removeIf(obj -> obj.name.equals("Match"));
+                        OBJ_Stone stone = new OBJ_Stone(gamePanel);
+                        inventory.removeIf(obj -> obj.name.equals("Bomb"));
+                        //temp gravel-lösning
+                        (gamePanel.obj[index]).spriteNum = 2;
+                        (gamePanel.obj[index]).collision = false;
                     }
-                    System.out.println("Bombs: " + hasBomb + " Matches: " + hasMatch);
                     break;
                 case "Cream":
                     speed -= 1;
@@ -155,8 +172,18 @@ public class Player extends Entity{
                     break;
                 case "Match":
                     if (inventory.size() < maxInventorySize) {
-                        inventory.add(new OBJ_Match(gamePanel));
-                        hasMatch++;
+                        //temp
+                        if (hasBomb > 0){
+                            hasBomb--;
+                            hasLitBomb++;
+                            OBJ_Bomb bomb = new OBJ_Bomb(gamePanel);
+                            bomb.lightBomb();
+                            inventory.removeIf(obj -> obj.name.equals("Bomb"));
+                            inventory.add(bomb);
+                        }else {
+                            inventory.add(new OBJ_Match(gamePanel));
+                            hasMatch++;
+                        }
                         gamePanel.obj[index] = null;
                     } else
                         gamePanel.ui.showMessage("Inventory full.");

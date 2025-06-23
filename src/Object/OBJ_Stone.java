@@ -9,7 +9,7 @@ public class OBJ_Stone extends SuperObject{
         name = "Stone";
         collision = true;
         down1 = setUp("/Stuff/stone.png");
-        image2 = setUp("/Stuff/gravel.png");
+        down2 = setUp("/Stuff/gravel.png");
     }
 }
 
