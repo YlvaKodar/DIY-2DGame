@@ -50,9 +50,9 @@ public class TileManager {
         setUp(23, "riverbankSouthWest", true);
         setUp(24, "sand", false); //d
         setUp(25, "sand", false);
-        setUp(26, "sand", false);
-        setUp(27, "sand", false);
-        setUp(28, "sand", false);
+        setUp(26, "sandbankSouth", false);
+        setUp(27, "waterToSandBankNorth", false);
+        setUp(28, "sandbankEast", false);
         setUp(29, "sand", false);
         setUp(30, "sand", false);
         setUp(31, "sand", false);
